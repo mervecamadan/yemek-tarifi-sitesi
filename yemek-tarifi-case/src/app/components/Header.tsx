@@ -15,12 +15,12 @@ const Header = () => {
             <div className="hidden lg:flex space-x-2 text-sm font-bold items-center">
                 <Link
                     href="/login"
-                    className="text-sm border bg-[#D1BFA4] border-lime-900 text-white font-bold px-7 py-2 rounded-3xl flex items-center">
+                    className="text-sm border bg-[#D1BFA4] text-white font-bold px-7 py-2 rounded-3xl flex items-center">
                     Log In
                 </Link>
                 <Link
                     href="/signup"
-                    className="text-sm border bg-[#A3C586] text-white border-lime-900 px-7 py-2 rounded-3xl font-bold flex items-center">
+                    className="text-sm border bg-[#A3C586] text-white px-7 py-2 rounded-3xl font-bold flex items-center">
                     Sign Up
                 </Link>
             </div>
