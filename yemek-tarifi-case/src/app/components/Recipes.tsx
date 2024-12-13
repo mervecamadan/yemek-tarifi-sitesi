@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link"; // Link bileşenini ekledik
+import Link from "next/link";
 import { Recipe } from "../types/recipe";
 import { getRecipes } from "../lib/api";
 
