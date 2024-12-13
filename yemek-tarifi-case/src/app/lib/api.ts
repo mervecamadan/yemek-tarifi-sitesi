@@ -16,3 +16,13 @@ export const getRecipes = async (): Promise<Recipe[]> => {
         throw error;
     }
 };
+
+export const getRecipeById = async (id: number): Promise<Recipe> => {
+    try {
+        const response = await axios.get<Recipe>(`https://dummyjson.com/recipes/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`ID'si ${id} olan tarifi çekerken bir hata oluştu:`, error);
+        throw error;
+    }
+};

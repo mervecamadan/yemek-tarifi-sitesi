@@ -7,8 +7,10 @@ export default function Home() {
   return (
     <div className="text-2xl text-white">
       <Header />
-      <Recipes />
-
+      <div className="pt-20">
+        <Recipes />
+      </div>
     </div>
   );
 }
+

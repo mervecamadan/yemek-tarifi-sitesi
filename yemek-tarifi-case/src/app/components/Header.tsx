@@ -7,20 +7,19 @@ const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     return (
-        <div className="bg-[#9B1B30] text-[#F5F3F0] px-6 py-4 flex justify-between items-center relative z-20">
+        <div className="bg-[#9B1B30] text-[#F5F3F0] px-6 py-4 flex justify-between items-center z-20 fixed top-0 left-0 w-full">
             <div className="text-xl font-bold">
                 MC MUTFAK
             </div>
 
             <div className="hidden lg:flex space-x-2 text-sm font-bold items-center">
-
                 <Link
-                    href="/"
+                    href="/login"
                     className="text-sm border bg-[#D1BFA4] border-lime-900 text-white font-bold px-7 py-2 rounded-3xl flex items-center">
                     Log In
                 </Link>
                 <Link
-                    href="/"
+                    href="/signup"
                     className="text-sm border bg-[#A3C586] text-white border-lime-900 px-7 py-2 rounded-3xl font-bold flex items-center">
                     Sign Up
                 </Link>
@@ -40,7 +39,7 @@ const Header = () => {
                         Log In
                     </Link>
                     <Link
-                        href="/"
+                        href="/signup"
                         className="block py-2 bg-[#A3C586] text-center text-black rounded-3xl">
                         Sign Up
                     </Link>
