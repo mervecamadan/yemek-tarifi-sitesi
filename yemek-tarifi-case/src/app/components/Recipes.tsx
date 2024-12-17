@@ -22,10 +22,10 @@ const Recipes = () => {
     }, []);
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-8 py-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-8 mt-8">
             {recipes.map((recipe) => (
                 <Link href={`/recipe/${recipe.id}`} key={recipe.id}>
-                    <div className="bg-[#f8e0c4] p-4 rounded-lg cursor-pointer hover:shadow-lg transition-shadow">
+                    <div className="bg-[#f8e0c4] p-4 rounded-lg cursor-pointer shadow-lg hover:shadow-xl transition-shadow">
                         <img
                             src={recipe.image}
                             alt={recipe.name}

@@ -11,7 +11,6 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { TbToolsKitchen2 } from "react-icons/tb";
 import { AiOutlineFire } from "react-icons/ai";
 
-
 type Params = {
     id: string;
 };
@@ -21,13 +20,21 @@ const RecipeDetail = ({ params }: { params: Params }) => {
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     const resolvedParams = params as Params;
 
     useEffect(() => {
+
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            router.push("/login");
+        } else {
+            setIsAuthenticated(true);
+        }
+
         const fetchData = async () => {
             try {
-
                 const { id } = resolvedParams;
                 if (!id) {
                     throw new Error("ID parametresi eksik");
@@ -44,8 +51,10 @@ const RecipeDetail = ({ params }: { params: Params }) => {
             }
         };
 
-        fetchData();
-    }, [resolvedParams, router]);
+        if (isAuthenticated) {
+            fetchData();
+        }
+    }, [resolvedParams, router, isAuthenticated]);
 
     if (loading) {
         return <div className="text-center mt-20">Loading...</div>;
@@ -60,7 +69,7 @@ const RecipeDetail = ({ params }: { params: Params }) => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-8">
+        <div className="max-w-4xl mx-auto p-8 mt-16">
             <h1 className="text-3xl font-bold text-[#9B1B30] text-center">{recipe.name}</h1>
             <img
                 src={recipe.image}
@@ -86,7 +95,7 @@ const RecipeDetail = ({ params }: { params: Params }) => {
             </p>
             <p className="flex items-center">
                 <TbToolsKitchen2 className="mr-3" />
-                <strong>Cuisine:</strong> {recipe.cuisine} minutes
+                <strong>Cuisine:</strong> {recipe.cuisine}
             </p>
             <p className="flex items-center">
                 <AiOutlineFire className="mr-3" />

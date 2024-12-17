@@ -6,6 +6,7 @@ const SignUpPage = () => {
         name: "",
         surname: "",
         email: "",
+        username: "",
         password: "",
     });
 
@@ -22,8 +23,8 @@ const SignUpPage = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[url('/signup.png')] bg-cover bg-center bg-no-repeat">
-            <div className="bg-[#fffdfdf8] p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h1 className="text-2xl font-bold text-center text-[#9B1B30] mb-6">
+            <div className="bg-[#fffdfdf8] opacity-95 p-8 rounded-lg shadow-lg w-full max-w-md">
+                <h1 className="text-2xl font-bold text-center text-[#9B1B30] mb-1">
                     Create an Account
                 </h1>
                 <form onSubmit={handleSubmit}>
@@ -37,7 +38,7 @@ const SignUpPage = () => {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B1B30]"
+                            className="w-full px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B1B30]"
                             placeholder="Enter your name"
                         />
                     </div>
@@ -51,8 +52,8 @@ const SignUpPage = () => {
                             name="surname"
                             value={formData.surname}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B1B30]"
-                            placeholder="Enter your name"
+                            className="w-full px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B1B30]"
+                            placeholder="Enter your surname"
                         />
                     </div>
                     <div className="mb-4">
@@ -65,8 +66,23 @@ const SignUpPage = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B1B30]"
+                            className="w-full px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B1B30]"
                             placeholder="Enter your email"
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="username" className="block text-sm font-bold mb-2">
+                            Username
+                        </label>
+                        <input
+                            type="username"
+                            id="username"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B1B30]"
+                            placeholder="Create a username"
                         />
                     </div>
                     <div className="mb-4">
@@ -79,7 +95,7 @@ const SignUpPage = () => {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B1B30]"
+                            className="w-full px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B1B30]"
                             placeholder="Create a password"
                         />
                     </div>
