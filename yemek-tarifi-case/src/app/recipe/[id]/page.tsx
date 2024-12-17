@@ -69,14 +69,14 @@ const RecipeDetail = ({ params }: { params: Params }) => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-8 mt-16">
+        <div className="max-w-4xl mx-auto p-20 mt-6">
             <h1 className="text-3xl font-bold text-[#9B1B30] text-center">{recipe.name}</h1>
             <img
                 src={recipe.image}
                 alt={recipe.name}
                 className="w-full h-96 object-cover my-4 rounded-lg"
             />
-            <p className="text-2xl text-white text-center bg-[#9B1B30] font-bold my-6">Description {recipe.description}</p>
+            <p className="text-2xl text-white text-center bg-[#A3C586] font-bold my-6">Description {recipe.description}</p>
             <p className="flex items-center">
                 <CiTimer className="mr-3" />
                 <strong>Prep Time:</strong> {recipe.prepTimeMinutes} minutes
@@ -102,13 +102,13 @@ const RecipeDetail = ({ params }: { params: Params }) => {
                 <strong>Calories per Serving:</strong> {recipe.caloriesPerServing} kcal
             </p>
 
-            <h2 className="text-2xl text-white text-center bg-[#9B1B30] font-bold my-6">Ingredients</h2>
+            <h2 className="text-2xl text-white text-center bg-[#A3C586] font-bold my-6">Ingredients</h2>
             <ul className="list-disc ml-6">
                 {recipe.ingredients.map((ingredient, index) => (
                     <li key={index}>{ingredient}</li>
                 ))}
             </ul>
-            <h2 className="text-2xl text-white text-center bg-[#9B1B30] font-bold my-6">Instructions</h2>
+            <h2 className="text-2xl text-white text-center bg-[#A3C586] font-bold my-6">Instructions</h2>
             <ol className="list-decimal ml-6">
                 {recipe.instructions.map((step, index) => (
                     <li key={index}>{step}</li>
