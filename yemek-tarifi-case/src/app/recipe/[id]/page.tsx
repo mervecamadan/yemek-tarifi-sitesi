@@ -10,6 +10,10 @@ import { GoPerson } from "react-icons/go";
 import { BsEmojiSmile } from "react-icons/bs";
 import { TbToolsKitchen2 } from "react-icons/tb";
 import { AiOutlineFire } from "react-icons/ai";
+import { IoIosStar, IoIosStarOutline } from "react-icons/io";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../redux/store";
+import { toggleFavorite } from "../../redux/favoritesSlice";
 
 type Params = {
     id: string;
@@ -22,10 +26,12 @@ const RecipeDetail = ({ params }: { params: Params }) => {
     const [error, setError] = useState<string | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+    const dispatch = useDispatch();
+    const favorites = useSelector((state: RootState) => state.favorites.favorites);
+
     const resolvedParams = params as Params;
 
     useEffect(() => {
-
         const token = localStorage.getItem("authToken");
         if (!token) {
             router.push("/login");
@@ -68,15 +74,41 @@ const RecipeDetail = ({ params }: { params: Params }) => {
         return <div className="text-center mt-20">Tarif bulunamadı!</div>;
     }
 
+
+    const isFavorite = recipe.id && favorites.some(favorite => favorite.id === recipe.id);
+
+    const handleFavorite = () => {
+        if (recipe.id) {
+
+            const favoriteRecipe = {
+                id: recipe.id,
+                name: recipe.name,
+                image: recipe.image,
+            };
+            dispatch(toggleFavorite(favoriteRecipe));
+        }
+    };
+
     return (
-        <div className="max-w-4xl mx-auto p-20 mt-6">
-            <h1 className="text-3xl font-bold text-[#9B1B30] text-center">{recipe.name}</h1>
+        <div className="max-w-4xl mx-auto p-20 mt-2">
+            <div className="flex justify-center items-center space-x-6">
+                <h1 className="text-2xl font-bold text-[#9B1B30]">{recipe.name}</h1>
+                <button onClick={handleFavorite} aria-label="Add to favorites">
+                    {isFavorite ? (
+                        <IoIosStar className="text-[#FFD700] text-3xl" />
+                    ) : (
+                        <IoIosStarOutline className="text-gray-500 text-3xl" />
+                    )}
+                </button>
+            </div>
             <img
                 src={recipe.image}
                 alt={recipe.name}
                 className="w-full h-96 object-cover my-4 rounded-lg"
             />
-            <p className="text-2xl text-white text-center bg-[#A3C586] font-bold my-6">Description {recipe.description}</p>
+            <p className="text-xl text-white text-center bg-[#A3C586] font-bold my-6">
+                Description {recipe.description}
+            </p>
             <p className="flex items-center">
                 <CiTimer className="mr-3" />
                 <strong>Prep Time:</strong> {recipe.prepTimeMinutes} minutes
@@ -102,13 +134,17 @@ const RecipeDetail = ({ params }: { params: Params }) => {
                 <strong>Calories per Serving:</strong> {recipe.caloriesPerServing} kcal
             </p>
 
-            <h2 className="text-2xl text-white text-center bg-[#A3C586] font-bold my-6">Ingredients</h2>
+            <h2 className="text-xl text-white text-center bg-[#A3C586] font-bold my-6">
+                Ingredients
+            </h2>
             <ul className="list-disc ml-6">
                 {recipe.ingredients.map((ingredient, index) => (
                     <li key={index}>{ingredient}</li>
                 ))}
             </ul>
-            <h2 className="text-2xl text-white text-center bg-[#A3C586] font-bold my-6">Instructions</h2>
+            <h2 className="text-xl text-white text-center bg-[#A3C586] font-bold my-6">
+                Instructions
+            </h2>
             <ol className="list-decimal ml-6">
                 {recipe.instructions.map((step, index) => (
                     <li key={index}>{step}</li>
