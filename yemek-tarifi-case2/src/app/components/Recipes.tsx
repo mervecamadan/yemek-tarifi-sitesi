@@ -14,6 +14,7 @@ const Recipes = () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const dispatch = useDispatch();
     const favorites = useSelector((state: RootState) => state.favorites.favorites);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     const handleFavoriteToggle = (recipe: Recipe, event: React.MouseEvent) => {
         event.stopPropagation();
@@ -25,6 +26,10 @@ const Recipes = () => {
     };
 
     useEffect(() => {
+
+        const token = localStorage.getItem("authToken");
+        setIsLoggedIn(!!token);
+
         const fetchRecipes = async () => {
             try {
                 const data = await getRecipes();
@@ -54,17 +59,19 @@ const Recipes = () => {
                         </h3>
                     </Link>
 
-                    <button
-                        onClick={(event) => handleFavoriteToggle(recipe, event)}
-                        className="absolute bottom-4 right-4 text-3xl z-10"
-                        aria-label="Toggle Favorite"
-                    >
-                        {isFavorite(recipe.id) ? (
-                            <IoIosStar className="text-orange-500 shadow-lg" />
-                        ) : (
-                            <IoIosStarOutline className="text-orange-500 shadow-lg" />
-                        )}
-                    </button>
+                    {isLoggedIn && (
+                        <button
+                            onClick={(event) => handleFavoriteToggle(recipe, event)}
+                            className="absolute bottom-4 right-4 text-3xl z-10"
+                            aria-label="Toggle Favorite"
+                        >
+                            {isFavorite(recipe.id) ? (
+                                <IoIosStar className="text-orange-500 shadow-lg" />
+                            ) : (
+                                <IoIosStarOutline className="text-orange-500 shadow-lg" />
+                            )}
+                        </button>
+                    )}
 
                     <div className="text-sm text-gray-800 mt-2">
                         <p><strong>Prep Time:</strong> {recipe.prepTimeMinutes} minutes</p>
