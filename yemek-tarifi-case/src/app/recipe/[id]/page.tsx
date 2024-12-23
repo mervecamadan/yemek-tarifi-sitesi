@@ -90,9 +90,9 @@ const RecipeDetail = ({ params }: { params: Params }) => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-20 mt-2">
+        <div className="max-w-3xl mx-auto p-20 mt-2">
             <div className="flex justify-center items-center space-x-6">
-                <h1 className="text-2xl font-bold text-[#9B1B30]">{recipe.name}</h1>
+                <h1 className="text-xl font-bold text-[#9B1B30]">{recipe.name}</h1>
                 <button onClick={handleFavorite} aria-label="Add to favorites">
                     {isFavorite ? (
                         <IoIosStar className="text-[#FFD700] text-3xl" />
@@ -104,7 +104,7 @@ const RecipeDetail = ({ params }: { params: Params }) => {
             <img
                 src={recipe.image}
                 alt={recipe.name}
-                className="w-full h-96 object-cover my-4 rounded-lg"
+                className="w-80 h-80 object-cover my-4 rounded-xl mx-auto shadow-2xl"
             />
             <p className="text-xl text-white text-center bg-[#A3C586] font-bold my-6">
                 Description {recipe.description}

@@ -39,7 +39,7 @@ const FavoritesPage = () => {
                                 <img
                                     src={image}
                                     alt={name}
-                                    className="w-48 h-48 object-cover rounded-lg"
+                                    className="w-48 h-48 object-cover rounded-lg shadow-lg"
                                 />
 
                                 <div className="flex flex-col items-start justify-between ml-6 w-64">

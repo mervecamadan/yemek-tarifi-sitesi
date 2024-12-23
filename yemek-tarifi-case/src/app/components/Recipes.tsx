@@ -38,17 +38,17 @@ const Recipes = () => {
     }, []);
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-8 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-8 mt-1">
             {recipes.map((recipe) => (
-                <div key={recipe.id} className="bg-[#fae7d2] p-4 rounded-lg shadow-xl hover:shadow-xl transition-shadow space-y-5 relative">
+                <div key={recipe.id} className="bg-[#fae7d2] p-4 rounded-lg shadow-xl hover:shadow-xl transition-shadow space-y-3 relative">
                     <img
                         src={recipe.image}
                         alt={recipe.name}
-                        className="rounded-lg w-full h-48 object-cover mb-4"
+                        className="rounded-lg w-full h-72 object-cover mb-2 shadow-md"
                     />
 
                     <Link href={`/recipe/${recipe.id}`}>
-                        <h3 className="text-lg font-bold text-[#9B1B30] bg-orange-50 text-center flex items-center justify-center">
+                        <h3 className="text-base font-bold text-[#9B1B30] bg-orange-50 text-center flex items-center justify-center">
                             {recipe.name}
                             <PiCursorClickThin className="ml-3 text-gray-600" />
                         </h3>
@@ -60,9 +60,9 @@ const Recipes = () => {
                         aria-label="Toggle Favorite"
                     >
                         {isFavorite(recipe.id) ? (
-                            <IoIosStar className="text-orange-500" />
+                            <IoIosStar className="text-orange-500 shadow-lg" />
                         ) : (
-                            <IoIosStarOutline className="text-orange-500" />
+                            <IoIosStarOutline className="text-orange-500 shadow-lg" />
                         )}
                     </button>
 
