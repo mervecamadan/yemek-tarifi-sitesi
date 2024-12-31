@@ -74,12 +74,10 @@ const RecipeDetail = ({ params }: { params: Params }) => {
         return <div className="text-center mt-20">Tarif bulunamadı!</div>;
     }
 
-
-    const isFavorite = recipe.id && favorites.some(favorite => favorite.id === recipe.id);
+    const isFavorite = recipe.id && favorites.some((favorite) => favorite.id === recipe.id);
 
     const handleFavorite = () => {
         if (recipe.id) {
-
             const favoriteRecipe = {
                 id: recipe.id,
                 name: recipe.name,
@@ -88,6 +86,25 @@ const RecipeDetail = ({ params }: { params: Params }) => {
             dispatch(toggleFavorite(favoriteRecipe));
         }
     };
+
+    const handleAddToShoppingList = () => {
+        if (recipe) {
+            const shoppingListItem = recipe.ingredients.map((ingredient) => ({
+                recipeName: recipe.name,
+                ingredient: ingredient,
+            }));
+
+            const currentList = JSON.parse(localStorage.getItem("shoppingList") || "[]");
+            const updatedList = [...currentList, ...shoppingListItem];
+
+
+            localStorage.setItem("shoppingList", JSON.stringify(updatedList));
+
+            alert("Ingredients added to the shopping list!");
+        }
+    };
+
+
 
     return (
         <div className="max-w-3xl mx-auto p-20 mt-2">
@@ -134,14 +151,22 @@ const RecipeDetail = ({ params }: { params: Params }) => {
                 <strong>Calories per Serving:</strong> {recipe.caloriesPerServing} kcal
             </p>
 
+
             <h2 className="text-xl text-white text-center bg-[#A3C586] font-bold my-6">
                 Ingredients
             </h2>
+
             <ul className="list-disc ml-6">
                 {recipe.ingredients.map((ingredient, index) => (
                     <li key={index}>{ingredient}</li>
                 ))}
             </ul>
+            <button
+                onClick={handleAddToShoppingList}
+                className="mt-6 px-4 py-2 bg-[#3b5228] text-white rounded-lg"
+            >
+                Add Ingredients to Shopping List
+            </button>
             <h2 className="text-xl text-white text-center bg-[#A3C586] font-bold my-6">
                 Instructions
             </h2>

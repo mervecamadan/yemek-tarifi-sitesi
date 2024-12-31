@@ -57,7 +57,7 @@ const FavoritesPage = () => {
                 </ul>
             ) : (
                 <p className="font-bold text-2xl flex justify-center">
-                    Henüz favori tarif eklemediniz.
+                    You haven't added any recipes
                 </p>
             )}
         </div>

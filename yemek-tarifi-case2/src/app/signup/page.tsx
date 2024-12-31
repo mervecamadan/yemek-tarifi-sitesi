@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { signUp } from "../lib/api";
 
 const SignUpPage = () => {
     const [formData, setFormData] = useState({
@@ -10,15 +11,42 @@ const SignUpPage = () => {
         password: "",
     });
 
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value.trim(),
+        }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form Data Submitted:", formData);
 
+        const { name, surname, email, username, password } = formData;
+
+
+        if (!name || !surname || !email || !username || !password) {
+            setErrorMessage("Lütfen tüm alanları doldurduğunuzdan emin olun.");
+            setSuccessMessage("");
+            return;
+        }
+
+        try {
+            const response = await signUp(name, surname, email, username, password);
+            if (response.message) {
+                setSuccessMessage("Kayıt başarılı! Giriş yapabilirsiniz.");
+                setErrorMessage("");
+            } else {
+                setErrorMessage("Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.");
+                setSuccessMessage("");
+            }
+        } catch (error) {
+            setErrorMessage("Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.");
+            setSuccessMessage("");
+        }
     };
 
     return (
@@ -43,7 +71,7 @@ const SignUpPage = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="name" className="block text-sm font-bold mb-2">
+                        <label htmlFor="surname" className="block text-sm font-bold mb-2">
                             Surname
                         </label>
                         <input
@@ -70,13 +98,12 @@ const SignUpPage = () => {
                             placeholder="Enter your email"
                         />
                     </div>
-
                     <div className="mb-4">
                         <label htmlFor="username" className="block text-sm font-bold mb-2">
                             Username
                         </label>
                         <input
-                            type="username"
+                            type="text"
                             id="username"
                             name="username"
                             value={formData.username}
@@ -99,12 +126,22 @@ const SignUpPage = () => {
                             placeholder="Create a password"
                         />
                     </div>
+
+                    {errorMessage && (
+                        <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
+                    )}
+
+                    {successMessage && (
+                        <div className="text-green-500 text-sm mb-4">{successMessage}</div>
+                    )}
+
                     <button
                         type="submit"
                         className="w-full bg-[#A3C586] text-white py-2 px-4 rounded-lg font-bold hover:bg-[#8fb775] transition">
                         Sign Up
                     </button>
                 </form>
+
                 <p className="text-sm text-center text-gray-600 mt-4">
                     <strong>Already have an account?{" "}</strong>
                     <a href="/login" className="text-[#9B1B30] font-bold hover:underline">

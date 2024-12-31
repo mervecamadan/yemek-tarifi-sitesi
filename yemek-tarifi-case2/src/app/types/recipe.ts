@@ -11,4 +11,5 @@ export interface Recipe {
     difficulty: string;
     cuisine: string;
     caloriesPerServing: number;
+    rating?: number;
 }

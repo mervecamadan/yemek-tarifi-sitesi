@@ -9,6 +9,37 @@ interface LoginResponse {
     token: string;
 }
 
+
+interface SignUpResponse {
+    message: string;
+    user: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        username: string;
+        email: string;
+    };
+}
+
+
+export const signUp = async (name: string, surname: string, email: string, username: string, password: string) => {
+    try {
+        const response = await axios.post<SignUpResponse>("https://dummyjson.com/users/add", {
+            firstName: name,
+            lastName: surname,
+            email,
+            username,
+            password,
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Kullanıcı kaydı sırasında bir hata oluştu:", error);
+        throw error;
+    }
+};
+
+
 export const getRecipes = async (): Promise<Recipe[]> => {
     try {
         const response = await axios.get<RecipesResponse>("https://dummyjson.com/recipes");
@@ -62,3 +93,23 @@ axios.interceptors.request.use((config) => {
 }, (error) => {
     return Promise.reject(error);
 });
+
+
+export const searchRecipes = async (query: string): Promise<Recipe[]> => {
+    try {
+        const response = await axios.get<RecipesResponse>(`https://dummyjson.com/recipes/search?q=${query}`);
+        return response.data.recipes;
+    } catch (error) {
+        console.error("Tarif araması sırasında bir hata oluştu:", error);
+        throw error;
+    }
+};
+
+// api.ts
+export const getFilterOptions = async () => {
+    // Filtreleme seçeneklerini döndüren kod
+    return {
+        category: ["Breakfast", "Lunch", "Dinner"],
+        cuisine: ["Italian", "Chinese", "Indian"],
+    };
+};
