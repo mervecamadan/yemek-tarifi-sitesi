@@ -27,6 +27,7 @@ const LoginPage = () => {
 
             await login(username, password);
             localStorage.setItem("username", username);
+            console.log("Giriş başarılı! Kullanıcı:", username);
 
             router.push("/");
         } catch (err) {

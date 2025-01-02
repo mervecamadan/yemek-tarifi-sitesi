@@ -24,7 +24,7 @@ interface UsersResponse {
 const ProfilePage = () => {
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState<string | null>(null);
-
+    console.log("user", user);
     useEffect(() => {
         const fetchUserData = async () => {
             try {

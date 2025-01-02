@@ -6,7 +6,7 @@ interface RecipesResponse {
 }
 
 interface LoginResponse {
-    token: string;
+    accessToken: string;
 }
 
 
@@ -66,10 +66,12 @@ export const login = async (username: string, password: string): Promise<string>
             username,
             password,
         });
-
-        const { token } = response.data;
-        localStorage.setItem("authToken", token);
-        return token;
+        console.log("Giriş başarılı! Kullanıcı:", username);
+        const accessToken = response.data.accessToken;
+        console.log("response", response);
+        console.log("token", accessToken);
+        localStorage.setItem("authToken", accessToken);
+        return accessToken;
     } catch (error) {
         console.error("Giriş işlemi sırasında bir hata oluştu:", error);
         throw error;
