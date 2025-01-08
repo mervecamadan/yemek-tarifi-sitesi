@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { toggleFavorite } from "../redux/favoritesSlice";
 import { MdOutlineArrowDropDown } from "react-icons/md";
+import { TfiFilter } from "react-icons/tfi";
 
 const MultiSelectDropdown = ({ label, options, selected, onChange }: any) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -71,6 +72,8 @@ const Recipes = () => {
     const dispatch = useDispatch();
     const favorites = useSelector((state: RootState) => state.favorites.favorites);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+    const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
     const handleFavoriteToggle = (recipe: Recipe, event: React.MouseEvent) => {
         event.stopPropagation();
@@ -137,130 +140,132 @@ const Recipes = () => {
 
     return (
         <div>
-            <div className="flex justify-between items-center mt-1 px-8 text-black text-base">
-                <div className="flex space-x-10">
-                    <MultiSelectDropdown
-                        label={
-                            <div className="flex justify-center items-center">
-                                <span>Prep Time</span>
-                                <MdOutlineArrowDropDown className="ml-1 text-gray-500 w-6 h-6" />
-                            </div>
-                        }
-                        options={prepTimeOptions}
-                        selected={filters.prepTimeMinutes}
-                        onChange={(selected: number[]) =>
-                            setFilters((prev) => ({ ...prev, prepTimeMinutes: selected }))
-                        }
-                    />
-                    <MultiSelectDropdown
-                        label={
-                            <div className="flex justify-center items-center">
-                                <span>Cook Time</span>
-                                <MdOutlineArrowDropDown className="ml-1 text-gray-500 w-6 h-6" />
-                            </div>
-                        }
-                        options={cookTimeOptions}
-                        selected={filters.cookTimeMinutes}
-                        onChange={(selected: number[]) =>
-                            setFilters((prev) => ({ ...prev, cookTimeMinutes: selected }))
-                        }
-                    />
-                    <MultiSelectDropdown
-                        label={
-                            <div className="flex justify-center items-center">
-                                <span>Servings</span>
-                                <MdOutlineArrowDropDown className="ml-1 text-gray-500 w-6 h-6" />
-                            </div>
-                        }
-                        options={servingOptions}
-                        selected={filters.servings}
-                        onChange={(selected: number[]) =>
-                            setFilters((prev) => ({ ...prev, servings: selected }))
-                        }
-                    />
-                    <MultiSelectDropdown
-                        label={
-                            <div className="flex justify-center items-center">
-                                <span>Difficulty</span>
-                                <MdOutlineArrowDropDown className="ml-1 text-gray-500 w-6 h-6" />
-                            </div>
-                        }
-                        options={difficultyOptions}
-                        selected={filters.difficulty}
-                        onChange={(selected: string[]) =>
-                            setFilters((prev) => ({ ...prev, difficulty: selected }))
-                        }
-                    />
-                </div>
 
+            <div className="sm:hidden flex justify-end px-8 mt-4">
                 <button
-                    className="bg-orange-500 text-white px-8 py-2 ml-16 rounded text-base"
-                    onClick={applyFilters}
+                    onClick={() => setIsFiltersOpen((prev) => !prev)}
+                    className="bg-gray-200 p-2 rounded-full text-black"
+                    aria-label="Toggle Filters"
                 >
-                    Filter
+                    <TfiFilter className="w-6 h-6" />
                 </button>
-
-                <button
-                    className="bg-[#A3C586] text-white px-8 py-2 rounded text-base"
-                    onClick={() => {
-                        setFilters({
-                            prepTimeMinutes: [],
-                            cookTimeMinutes: [],
-                            servings: [],
-                            difficulty: [],
-                        });
-                        setFilteredRecipes(recipes);
-                    }}
-                >
-                    Clear
-                </button>
-
-
             </div>
 
-            {/*Tarifler*/}
+
+            {(isFiltersOpen || window.innerWidth >= 640) && (
+                <div className="flex flex-col sm:flex-col md:flex-row justify-between sm:items-start md:items-center mt-1 px-8 text-black text-base space-y-4 sm:space-y-0">
+                    <div className="flex flex-col sm:flex-col md:flex-row md:space-x-10 space-y-4 sm:space-y-0 w-full md:w-auto items-center">
+                        <MultiSelectDropdown
+                            label="Prep Time"
+                            options={prepTimeOptions}
+                            selected={filters.prepTimeMinutes}
+                            onChange={(selected: number[]) =>
+                                setFilters((prev) => ({ ...prev, prepTimeMinutes: selected }))
+                            }
+                        />
+                        <MultiSelectDropdown
+                            label="Cook Time"
+                            options={cookTimeOptions}
+                            selected={filters.cookTimeMinutes}
+                            onChange={(selected: number[]) =>
+                                setFilters((prev) => ({ ...prev, cookTimeMinutes: selected }))
+                            }
+                        />
+                        <MultiSelectDropdown
+                            label="Servings"
+                            options={servingOptions}
+                            selected={filters.servings}
+                            onChange={(selected: number[]) =>
+                                setFilters((prev) => ({ ...prev, servings: selected }))
+                            }
+                        />
+                        <MultiSelectDropdown
+                            label="Difficulty"
+                            options={difficultyOptions}
+                            selected={filters.difficulty}
+                            onChange={(selected: string[]) =>
+                                setFilters((prev) => ({ ...prev, difficulty: selected }))
+                            }
+                        />
+                    </div>
+
+                    <div className="flex flex-col sm:flex-col md:flex-row md:space-x-4 space-y-4 sm:space-y-0 w-full md:w-auto items-center">
+                        <button
+                            className="bg-orange-500 text-white px-8 py-2 rounded text-base"
+                            onClick={applyFilters}
+                        >
+                            Filter
+                        </button>
+
+                        <button
+                            className="bg-[#A3C586] text-white px-8 py-2 rounded text-base"
+                            onClick={() => {
+                                setFilters({
+                                    prepTimeMinutes: [],
+                                    cookTimeMinutes: [],
+                                    servings: [],
+                                    difficulty: [],
+                                });
+                                setFilteredRecipes(recipes);
+                            }}
+                        >
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Tarifler */}
+
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-8 mt-12">
-                {(filteredRecipes.length > 0 ? filteredRecipes : recipes).map((recipe) => (
-                    <div key={recipe.id} className="bg-[#fae7d2] p-4 rounded-lg shadow-xl hover:shadow-xl transition-shadow space-y-3 relative">
-                        <img
-                            src={recipe.image}
-                            alt={recipe.name}
-                            className="rounded-lg w-full h-72 object-cover mb-2 shadow-md"
-                        />
+                {filteredRecipes.length > 0 ? (
+                    filteredRecipes.map((recipe) => (
+                        <div key={recipe.id} className="bg-[#fae7d2] p-4 rounded-lg shadow-xl hover:shadow-xl transition-shadow space-y-3 relative">
+                            <img
+                                src={recipe.image}
+                                alt={recipe.name}
+                                className="rounded-lg w-full h-72 object-cover mb-2 shadow-md"
+                            />
 
-                        <Link href={`/recipe/${recipe.id}`}>
-                            <h3 className="text-base font-bold text-[#9B1B30] bg-orange-50 text-center flex items-center justify-center">
-                                {recipe.name}
-                                <PiCursorClickThin className="ml-3 text-gray-600" />
-                            </h3>
-                        </Link>
+                            <Link href={`/recipe/${recipe.id}`}>
+                                <h3 className="text-base font-bold text-[#9B1B30] bg-orange-50 text-center flex items-center justify-center">
+                                    {recipe.name}
+                                    <PiCursorClickThin className="ml-3 text-gray-600" />
+                                </h3>
+                            </Link>
 
-                        {isLoggedIn && (
-                            <button
-                                onClick={(event) => handleFavoriteToggle(recipe, event)}
-                                className="absolute bottom-4 right-4 text-3xl z-10"
-                                aria-label="Toggle Favorite"
-                            >
-                                {isFavorite(recipe.id) ? (
-                                    <IoIosStar className="text-orange-500 shadow-lg" />
-                                ) : (
-                                    <IoIosStarOutline className="text-orange-500 shadow-lg" />
-                                )}
-                            </button>
-                        )}
+                            {isLoggedIn && (
+                                <button
+                                    onClick={(event) => handleFavoriteToggle(recipe, event)}
+                                    className="absolute bottom-4 right-4 text-3xl z-10"
+                                    aria-label="Toggle Favorite"
+                                >
+                                    {isFavorite(recipe.id) ? (
+                                        <IoIosStar className="text-orange-500 shadow-lg" />
+                                    ) : (
+                                        <IoIosStarOutline className="text-orange-500 shadow-lg" />
+                                    )}
+                                </button>
+                            )}
 
-                        <div className="text-sm text-gray-800 mt-2">
-                            <p><strong>Prep Time:</strong> {recipe.prepTimeMinutes} minutes</p>
-                            <p><strong>Cook Time:</strong> {recipe.cookTimeMinutes} minutes</p>
-                            <p><strong>Servings:</strong> {recipe.servings}</p>
-                            <p><strong>Difficulty:</strong> {recipe.difficulty}</p>
-                            <p><strong>Cuisine:</strong> {recipe.cuisine}</p>
-                            <p><strong>Calories per Serving:</strong> {recipe.caloriesPerServing} kcal</p>
+                            <div className="text-sm text-gray-800 mt-2">
+                                <p><strong>Prep Time:</strong> {recipe.prepTimeMinutes} minutes</p>
+                                <p><strong>Cook Time:</strong> {recipe.cookTimeMinutes} minutes</p>
+                                <p><strong>Servings:</strong> {recipe.servings}</p>
+                                <p><strong>Difficulty:</strong> {recipe.difficulty}</p>
+                                <p><strong>Cuisine:</strong> {recipe.cuisine}</p>
+                                <p><strong>Calories per Serving:</strong> {recipe.caloriesPerServing} kcal</p>
+                            </div>
                         </div>
+                    ))
+                ) : (
+                    <div className="flex items-center justify-center text-gray-600 text-xl mt-12">
+                        No results
                     </div>
-                ))}
+                )}
             </div>
+
         </div>
     );
 };

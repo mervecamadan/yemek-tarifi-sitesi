@@ -19,34 +19,35 @@ type Params = {
     id: string;
 };
 
-const RecipeDetail = ({ params }: { params: Params }) => {
+const RecipeDetail = ({ params }: { params: Promise<Params> }) => {
     const router = useRouter();
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [resolvedParams, setResolvedParams] = useState<Params | null>(null);
 
     const dispatch = useDispatch();
     const favorites = useSelector((state: RootState) => state.favorites.favorites);
 
-    const resolvedParams = params as Params;
-
     useEffect(() => {
-        const token = localStorage.getItem("authToken");
-        if (!token) {
-            router.push("/login");
-        } else {
-            setIsAuthenticated(true);
-        }
-
-        const fetchData = async () => {
+        const fetchParamsAndData = async () => {
             try {
-                const { id } = resolvedParams;
-                if (!id) {
+                const token = localStorage.getItem("authToken");
+                if (!token) {
+                    router.push("/login");
+                    return;
+                }
+                setIsAuthenticated(true);
+
+                const resolved = await params; // Promise olan params çözümleniyor.
+                setResolvedParams(resolved);
+
+                if (!resolved.id) {
                     throw new Error("ID parametresi eksik");
                 }
 
-                const data = await getRecipeById(parseInt(id));
+                const data = await getRecipeById(parseInt(resolved.id));
                 setRecipe(data);
             } catch (error: any) {
                 console.error("Tarif yüklenemedi:", error);
@@ -57,10 +58,8 @@ const RecipeDetail = ({ params }: { params: Params }) => {
             }
         };
 
-        if (isAuthenticated) {
-            fetchData();
-        }
-    }, [resolvedParams, router, isAuthenticated]);
+        fetchParamsAndData();
+    }, [params, router]);
 
     if (loading) {
         return <div className="text-center mt-20">Loading...</div>;
@@ -97,14 +96,11 @@ const RecipeDetail = ({ params }: { params: Params }) => {
             const currentList = JSON.parse(localStorage.getItem("shoppingList") || "[]");
             const updatedList = [...currentList, ...shoppingListItem];
 
-
             localStorage.setItem("shoppingList", JSON.stringify(updatedList));
 
             alert("Ingredients added to the shopping list!");
         }
     };
-
-
 
     return (
         <div className="max-w-3xl mx-auto p-20 mt-2">
@@ -150,7 +146,6 @@ const RecipeDetail = ({ params }: { params: Params }) => {
                 <AiOutlineFire className="mr-3" />
                 <strong>Calories per Serving:</strong> {recipe.caloriesPerServing} kcal
             </p>
-
 
             <h2 className="text-xl text-white text-center bg-[#A3C586] font-bold my-6">
                 Ingredients

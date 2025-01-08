@@ -7,6 +7,7 @@ import { RootState } from "../redux/store";
 import { FaUser } from "react-icons/fa6";
 import { searchRecipes } from "../lib/api";
 import { Recipe } from '../types/recipe';
+import { MdMenu } from "react-icons/md";
 
 // Debounce fonksiyonu burada tanımlandı
 const debounce = <T extends (...args: any[]) => void>(func: T, delay: number) => {
@@ -81,7 +82,7 @@ const Header: React.FC = () => {
 
     return (
         <div className="bg-[#9B1B30] text-[#F5F3F0] px-8 py-4 flex justify-between items-center z-20 fixed top-0 left-0 w-full">
-            <div className="text-xl font-bold">
+            <div className="text-lg font-bold">
                 <Link href="/">MC KITCHEN</Link>
             </div>
 
@@ -105,68 +106,68 @@ const Header: React.FC = () => {
             </div>
 
             <div className="flex space-x-4 text-sm font-bold items-center">
-                {isLoggedIn ? (
-                    <div className="relative" ref={userMenuRef}>
-                        <button
-                            onClick={() => setUserMenuOpen(!userMenuOpen)}
-                            className="flex items-center focus:outline-none"
-                        >
-                            <FaUser size={24} />
-                        </button>
-                        {userMenuOpen && (
-                            <div className="absolute right-0 mt-2 bg-white text-black rounded shadow-lg p-4 text-sm min-w-[200px]">
-                                <p className="mb-2">Welcome, {username || "Kullanıcı"}!</p>
-                                <Link
-                                    href="/profile"
-                                    className="mb-2 w-full bg-[#A3C586] text-white py-1 rounded hover:bg-[#D1BFA4] flex items-center justify-center"
-                                    onClick={() => setUserMenuOpen(false)}
-                                >
-                                    Profile
-                                </Link>
-                                <Link
-                                    href="/favorites"
-                                    className="mb-2 w-full bg-orange-500 text-white py-1 rounded hover:bg-[#D1BFA4] flex items-center justify-center"
-                                    onClick={() => setUserMenuOpen(false)}
-                                >
-                                    Favorites {favoritesCount > 0 && `(${favoritesCount})`}
-                                </Link>
-
-                                <Link
-                                    href="/shoppinglist"
-                                    className="mb-2 w-full bg-[#669df0] text-white py-1 rounded hover:bg-[#D1BFA4] flex items-center justify-center"
-                                    onClick={() => setUserMenuOpen(false)}
-                                >
-                                    Shopping List
-                                </Link>
-
-                                <button
-                                    onClick={() => {
-                                        setUserMenuOpen(false);
-                                        handleLogout();
-                                    }}
-                                    className="w-full bg-[#9B1B30] text-white py-1 rounded hover:bg-[#D1BFA4]"
-                                >
-                                    LOG OUT
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                ) : (
-                    <>
-                        <Link
-                            href="/login"
-                            className="text-sm border bg-[#D1BFA4] text-white font-bold px-7 py-2 rounded-3xl flex items-center justify-center"
-                        >
-                            Log In
-                        </Link>
-                        <Link
-                            href="/signup"
-                            className="text-sm border bg-[#A3C586] text-white px-7 py-2 rounded-3xl font-bold flex items-center justify-center"
-                        >
-                            Sign Up
-                        </Link>
-                    </>
-                )}
+                <div className="relative" ref={userMenuRef}>
+                    <button
+                        onClick={() => setUserMenuOpen(!userMenuOpen)}
+                        className="flex items-center focus:outline-none"
+                    >
+                        <MdMenu size={32} />
+                    </button>
+                    {userMenuOpen && (
+                        <div className="absolute right-0 mt-2 bg-white text-black rounded shadow-lg p-4 text-sm min-w-[200px]">
+                            {isLoggedIn ? (
+                                <>
+                                    <p className="mb-2">Welcome, {username || "Kullanıcı"}!</p>
+                                    <Link
+                                        href="/profile"
+                                        className="mb-2 w-full bg-[#A3C586] text-white py-1 rounded hover:bg-[#D1BFA4] flex items-center justify-center"
+                                        onClick={() => setUserMenuOpen(false)}
+                                    >
+                                        Profile
+                                    </Link>
+                                    <Link
+                                        href="/favorites"
+                                        className="mb-2 w-full bg-orange-500 text-white py-1 rounded hover:bg-[#D1BFA4] flex items-center justify-center"
+                                        onClick={() => setUserMenuOpen(false)}
+                                    >
+                                        Favorites {favoritesCount > 0 && `(${favoritesCount})`}
+                                    </Link>
+                                    <Link
+                                        href="/shoppinglist"
+                                        className="mb-2 w-full bg-[#669df0] text-white py-1 rounded hover:bg-[#D1BFA4] flex items-center justify-center"
+                                        onClick={() => setUserMenuOpen(false)}
+                                    >
+                                        Shopping List
+                                    </Link>
+                                    <button
+                                        onClick={() => {
+                                            setUserMenuOpen(false);
+                                            handleLogout();
+                                        }}
+                                        className="w-full bg-[#9B1B30] text-white py-1 rounded hover:bg-[#D1BFA4]"
+                                    >
+                                        LOG OUT
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link
+                                        href="/login"
+                                        className="mb-2 w-full bg-[#D1BFA4] text-white py-1 rounded hover:bg-[#A3C586] flex items-center justify-center"
+                                    >
+                                        Log In
+                                    </Link>
+                                    <Link
+                                        href="/signup"
+                                        className="w-full bg-[#A3C586] text-white py-1 rounded hover:bg-[#D1BFA4] flex items-center justify-center"
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
